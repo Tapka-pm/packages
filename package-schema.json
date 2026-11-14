@@ -103,17 +103,18 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "download",
         "install",
         "commands"
       ],
       "properties": {
         "download": {
           "type": "object",
+          "description": "Upstream distribution. Draft configurations may omit this field until an artifact is available.",
           "additionalProperties": false,
-          "required": [
-            "url",
-            "sha256"
+          "required": ["url"],
+          "oneOf": [
+            { "required": ["sha256"] },
+            { "required": ["sha512"] }
           ],
           "properties": {
             "url": {
@@ -127,15 +128,22 @@
               "minLength": 64,
               "maxLength": 64,
               "pattern": "^[A-Fa-f0-9]{64}$"
+            },
+            "sha512": {
+              "type": "string",
+              "minLength": 128,
+              "maxLength": 128,
+              "pattern": "^[A-Fa-f0-9]{128}$"
             }
           }
         },
         "install": {
           "type": "object",
           "additionalProperties": false,
-          "required": [
-            "type",
-            "script"
+          "required": ["type"],
+          "oneOf": [
+            { "required": ["script"] },
+            { "required": ["archive"] }
           ],
           "properties": {
             "type": {
@@ -145,6 +153,10 @@
               "$ref": "#/$defs/relativePath",
               "pattern": "\\.[pP][sS]1$",
               "description": "Path to the PowerShell 7 script, relative to the recipe directory."
+            },
+            "archive": {
+              "const": "zip",
+              "description": "Extract the downloaded ZIP directly into the staging directory."
             }
           }
         },

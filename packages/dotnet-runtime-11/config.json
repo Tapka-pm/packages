@@ -1,0 +1,42 @@
+{
+  "$schema": "../../package-schema.json",
+  "id": "dotnet-runtime-11",
+  "versions": {
+    "latest": {
+      "type": "alias",
+      "to": "11.0.0"
+    },
+    "11.0.0": {
+      "type": "package",
+      "dependencies": [],
+      "architectures": {
+        "x64": {
+          "download": {
+            "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/11.0.0/dotnet-runtime-11.0.0-win-x64.zip",
+            "sha512": "48d200527a30d2b21e361d1e91c9b71df736e7da76383d7f7b4e4102a1bc78d1e4690c6540f308598ed036ca30e92de90ac80628f4ca498c55e826d86b1fe313"
+          },
+          "install": {
+            "type": "portable",
+            "archive": "zip"
+          },
+          "commands": {
+            "dotnet": "dotnet.exe"
+          }
+        },
+        "arm64": {
+          "download": {
+            "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/11.0.0/dotnet-runtime-11.0.0-win-arm64.zip",
+            "sha512": "39f43512557ebcca202ff62d2e96f5ad3549f7a3535ff94852a9960abb24236353e05a7d37a5d1c1ec2c3d1f05807a8c8490acbc6439c51e16c0796676e9c02f"
+          },
+          "install": {
+            "type": "portable",
+            "archive": "zip"
+          },
+          "commands": {
+            "dotnet": "dotnet.exe"
+          }
+        }
+      }
+    }
+  }
+}
