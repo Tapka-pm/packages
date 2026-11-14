@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tapka package configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "versions"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "id": {
+      "$ref": "#/$defs/packageId"
+    },
+    "versions": {
+      "type": "object",
+      "description": "Package releases and aliases keyed by version. Resolve latest when an install request omits the version.",
+      "required": ["latest"],
+      "propertyNames": {
+        "$ref": "#/$defs/versionName"
+      },
+      "properties": {
+        "latest": {
+          "$ref": "#/$defs/versionAlias",
+          "description": "Alias for the latest release and the default version for installation."
+        }
+      },
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/packageVersion" },
+          { "$ref": "#/$defs/versionAlias" }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "packageId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "versionName": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "versionAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "to"],
+      "properties": {
+        "type": {
+          "const": "alias"
+        },
+        "to": {
+          "$ref": "#/$defs/versionName",
+          "description": "Version key in this package's versions object."
+        }
+      }
+    },
+    "packageVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "dependencies",
+        "architectures"
+      ],
+      "properties": {
+        "type": {
+          "const": "package"
+        },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/packageId"
+          }
+        },
+        "architectures": {
+          "type": "object",
+          "description": "Available Windows targets for this release.",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "x64": {
+              "$ref": "#/$defs/windowsTarget"
+            },
+            "arm64": {
+              "$ref": "#/$defs/windowsTarget"
+            }
+          }
+        }
+      }
+    },
+    "relativePath": {
+      "type": "string",
+      "pattern": "^(?!.*[. ](?:[/\\\\]|$))[^/\\\\:\"<>|?*\\x00-\\x1f]+(?:[/\\\\][^/\\\\:\"<>|?*\\x00-\\x1f]+)*$",
+      "description": "A relative Windows path whose segments do not end in a dot or space."
+    },
+    "windowsTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "download",
+        "install",
+        "commands"
+      ],
+      "properties": {
+        "download": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "sha256"
+          ],
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https://[^/\\s?#]+[^\\s]*$",
+              "description": "HTTPS URL of the upstream distribution."
+            },
+            "sha256": {
+              "type": "string",
+              "minLength": 64,
+              "maxLength": 64,
+              "pattern": "^[A-Fa-f0-9]{64}$"
+            }
+          }
+        },
+        "install": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "script"
+          ],
+          "properties": {
+            "type": {
+              "const": "portable"
+            },
+            "script": {
+              "$ref": "#/$defs/relativePath",
+              "pattern": "\\.[pP][sS]1$",
+              "description": "Path to the PowerShell 7 script, relative to the recipe directory."
+            }
+          }
+        },
+        "commands": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/relativePath"
+          },
+          "description": "Command names mapped to executable paths inside the installed package."
+        }
+      }
+    }
+  }
+}
