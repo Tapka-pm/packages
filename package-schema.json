@@ -5,9 +5,7 @@
   "additionalProperties": false,
   "required": [
     "id",
-    "version",
-    "dependencies",
-    "architectures"
+    "versions"
   ],
   "properties": {
     "$schema": {
@@ -17,30 +15,24 @@
     "id": {
       "$ref": "#/$defs/packageId"
     },
-    "version": {
-      "type": "string",
-      "pattern": "\\S",
-      "description": "Version of the current release."
-    },
-    "dependencies": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "$ref": "#/$defs/packageId"
-      }
-    },
-    "architectures": {
+    "versions": {
       "type": "object",
-      "description": "Available Windows targets for this release.",
-      "minProperties": 1,
-      "additionalProperties": false,
+      "description": "Current releases of maintained release lines and their aliases. Resolve latest when an install request omits the version.",
+      "required": ["latest"],
+      "propertyNames": {
+        "$ref": "#/$defs/versionName"
+      },
       "properties": {
-        "x64": {
-          "$ref": "#/$defs/windowsTarget"
-        },
-        "arm64": {
-          "$ref": "#/$defs/windowsTarget"
+        "latest": {
+          "$ref": "#/$defs/versionAlias",
+          "description": "Alias for the latest release and the default version for installation."
         }
+      },
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/packageVersion" },
+          { "$ref": "#/$defs/versionAlias" }
+        ]
       }
     }
   },
@@ -48,6 +40,59 @@
     "packageId": {
       "type": "string",
       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "versionName": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "versionAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "to"],
+      "properties": {
+        "type": {
+          "const": "alias"
+        },
+        "to": {
+          "$ref": "#/$defs/versionName",
+          "description": "Version key in this package's versions object."
+        }
+      }
+    },
+    "packageVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "dependencies",
+        "architectures"
+      ],
+      "properties": {
+        "type": {
+          "const": "package"
+        },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/packageId"
+          }
+        },
+        "architectures": {
+          "type": "object",
+          "description": "Available Windows targets for this release.",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "x64": {
+              "$ref": "#/$defs/windowsTarget"
+            },
+            "arm64": {
+              "$ref": "#/$defs/windowsTarget"
+            }
+          }
+        }
+      }
     },
     "relativePath": {
       "type": "string",
