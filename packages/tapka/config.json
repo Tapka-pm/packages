@@ -8,9 +8,34 @@
     },
     "0.1.0": {
       "type": "package",
-      "dependencies": ["dotnet-runtime-11", "powershell"],
+      "dependencies": [
+        "dotnet-runtime-11",
+        "powershell"
+      ],
       "architectures": {
         "x64": {
+          "install": {
+            "type": "portable",
+            "archive": "zip"
+          },
+          "commands": {
+            "tapka": "tapka.exe"
+          }
+        }
+      }
+    },
+    "0.1.2": {
+      "type": "package",
+      "dependencies": [
+        "dotnet-runtime-11",
+        "powershell"
+      ],
+      "architectures": {
+        "x64": {
+          "download": {
+            "url": "https://github.com/Tapka-pm/tapka/releases/download/v0.1.2/tapka-win-x64.zip",
+            "sha256": "5ac35e7cd9825807618317bc05aacd0be8cd621e53bc882e86b3d943ee533577"
+          },
           "install": {
             "type": "portable",
             "archive": "zip"
