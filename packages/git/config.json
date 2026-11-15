@@ -21,6 +21,7 @@
           },
           "install": {
             "type": "portable",
+            "archive": "7z",
             "script": "install.ps1"
           },
           "commands": {

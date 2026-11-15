@@ -162,7 +162,7 @@
           "type": "object",
           "additionalProperties": false,
           "required": ["type"],
-          "oneOf": [
+          "anyOf": [
             { "required": ["script"] },
             { "required": ["archive"] }
           ],
@@ -173,7 +173,7 @@
             "script": {
               "$ref": "#/$defs/relativePath",
               "pattern": "\\.[pP][sS]1$",
-              "description": "Path to the PowerShell 7 script, relative to the recipe directory."
+              "description": "Path to the PowerShell 7 script, relative to the recipe directory. If archive is also specified, run the script after extraction."
             },
             "archive": {
               "enum": ["zip", "7z", "rar", "tar", "tar.gz", "tar.xz"],
