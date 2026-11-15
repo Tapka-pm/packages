@@ -1,0 +1,42 @@
+{
+  "$schema": "../../package-schema.json",
+  "id": "7zr",
+  "versions": {
+    "latest": {
+      "type": "alias",
+      "to": "26.06"
+    },
+    "26.06": {
+      "type": "package",
+      "dependencies": [],
+      "architectures": {
+        "x64": {
+          "download": {
+            "url": "https://github.com/ip7z/7zip/releases/download/26.06/7zr.exe",
+            "sha256": "e80db2dad715a6c5adabe292d31ed54e11f4e9b99ca349827b50573b175891bc"
+          },
+          "install": {
+            "type": "portable",
+            "script": "install.ps1"
+          },
+          "commands": {
+            "7zr": "7zr.exe"
+          }
+        },
+        "arm64": {
+          "download": {
+            "url": "https://github.com/ip7z/7zip/releases/download/26.06/7zr.exe",
+            "sha256": "e80db2dad715a6c5adabe292d31ed54e11f4e9b99ca349827b50573b175891bc"
+          },
+          "install": {
+            "type": "portable",
+            "script": "install.ps1"
+          },
+          "commands": {
+            "7zr": "7zr.exe"
+          }
+        }
+      }
+    }
+  }
+}

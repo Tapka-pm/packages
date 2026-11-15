@@ -176,8 +176,8 @@
               "description": "Path to the PowerShell 7 script, relative to the recipe directory."
             },
             "archive": {
-              "const": "zip",
-              "description": "Extract the downloaded ZIP directly into the staging directory."
+              "enum": ["zip", "7z", "rar", "tar", "tar.gz", "tar.xz"],
+              "description": "Extract the verified archive into the staging directory using the declared format."
             }
           }
         },
