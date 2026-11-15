@@ -4,16 +4,16 @@
   "versions": {
     "latest": {
       "type": "alias",
-      "to": "1.0.0"
+      "to": "0.1.0"
     },
-    "1.0.0": {
+    "0.1.0": {
       "type": "package",
       "dependencies": ["dotnet-runtime-11", "powershell"],
       "architectures": {
         "x64": {
           "install": {
             "type": "portable",
-            "script": "install.ps1"
+            "archive": "zip"
           },
           "commands": {
             "tapka": "tapka.exe"
