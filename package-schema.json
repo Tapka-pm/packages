@@ -75,7 +75,10 @@
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/packageId"
+            "oneOf": [
+              { "$ref": "#/$defs/packageId" },
+              { "$ref": "#/$defs/renamedDependency" }
+            ]
           }
         },
         "architectures": {
@@ -93,6 +96,24 @@
           }
         }
       }
+    },
+    "renamedDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "rename"],
+      "properties": {
+        "id": { "$ref": "#/$defs/packageId" },
+        "rename": {
+          "type": "object",
+          "description": "Command names mapped to aliases in this package's dependency PATH.",
+          "propertyNames": { "$ref": "#/$defs/commandName" },
+          "additionalProperties": { "$ref": "#/$defs/commandName" }
+        }
+      }
+    },
+    "commandName": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
     },
     "relativePath": {
       "type": "string",
@@ -163,7 +184,7 @@
         "commands": {
           "type": "object",
           "propertyNames": {
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+            "$ref": "#/$defs/commandName"
           },
           "additionalProperties": {
             "$ref": "#/$defs/relativePath"
