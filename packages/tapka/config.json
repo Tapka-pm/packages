@@ -89,6 +89,28 @@
           }
         }
       }
+    },
+    "0.4.0": {
+      "type": "package",
+      "dependencies": [
+        "dotnet-runtime-11",
+        "powershell"
+      ],
+      "architectures": {
+        "x64": {
+          "download": {
+            "url": "https://github.com/Tapka-pm/tapka/releases/download/v0.4.0/tapka-win-x64.zip",
+            "sha256": "00780f2106ecef1ccaac51c1479f7e64becf0f289dc528ea9eedc6fa9e2617fd"
+          },
+          "install": {
+            "type": "portable",
+            "archive": "zip"
+          },
+          "commands": {
+            "tapka": "tapka.exe"
+          }
+        }
+      }
     }
   }
 }
